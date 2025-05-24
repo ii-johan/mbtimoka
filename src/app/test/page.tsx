@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react'; // useMemo 임포트
 import { useRouter, useSearchParams } from 'next/navigation';
 import { questionsData as allQuestions, Question } from '@/data/questionsData';
 
@@ -21,8 +21,8 @@ const TestPage: React.FC = () => {
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [selectedOptionForCurrentQ, setSelectedOptionForCurrentQ] = useState<number | null>(null); // 현재 질문에서 선택된 옵션 인덱스
 
-  // 7가지 선택지 정의 (텍스트와 점수)
-  const optionsConfig = [
+  // 🔴 optionsConfig를 useMemo로 감싸서 매 렌더링마다 새로 생성되지 않도록 최적화
+  const optionsConfig = useMemo(() => [
     { text: "Yes++", score: 7, colors: ["#50C878", "#3CB371"] }, // 에메랄드 그린
     { text: "Yes+", score: 6, colors: ["#66CDAA", "#4CAF50"] },  // 아쿠아 마린
     { text: "Yes", score: 5, colors: ["#90EE90", "#7CFC00"] },   // 연두색
@@ -30,7 +30,7 @@ const TestPage: React.FC = () => {
     { text: "No", score: 3, colors: ["#FFD700", "#FFA500"] },    // 골드
     { text: "No+", score: 2, colors: ["#FF8C00", "#FF4500"] },   // 다크 오렌지
     { text: "No++", score: 1, colors: ["#FF6347", "#FF0000"] },  // 토마토 레드
-  ];
+  ], []); // 빈 의존성 배열로, 컴포넌트 마운트 시 한 번만 생성
 
   useEffect(() => {
     const ids = searchParams.get('ids');
@@ -180,8 +180,8 @@ const TestPage: React.FC = () => {
         border: '2px solid #FFC107', // 노란색 테두리
         boxShadow: '0 8px 20px rgba(255,215,0,0.3)', // 노란색 그림자
         color: '#333333', // 질문 글씨색
-        fontSize: '1.7em',
-        fontWeight: 'bold',
+        fontSize: '1.4em',
+        fontWeight: 'normal',
         lineHeight: '1.6',
         animation: 'fadeInQuestion 0.8s ease-out',
         display: 'flex', // 텍스트 중앙 정렬을 위해 추가
@@ -200,7 +200,7 @@ const TestPage: React.FC = () => {
         display: 'flex', // 가로로 나열
         justifyContent: 'center', // 가운데 정렬
         alignItems: 'center', // 세로 가운데 정렬
-        gap: '5px', // 🔴 버튼 간 간격 더 좁게
+        gap: '10px', // 🔴 버튼 간 간격 더 좁게
         marginTop: '30px', // 🔴 질문 박스와 버튼 사이 간격 확보
         paddingBottom: '20px', // 하단 패딩
         flexShrink: 0, // 컨테이너가 줄어들지 않도록

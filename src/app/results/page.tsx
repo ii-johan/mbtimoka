@@ -4,26 +4,26 @@
 
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { questionsData as allQuestions } from '@/data/questionsData'; // questionsData 임포트
+import { questionsData as allQuestions } from '@/data/questionsData';
 
-// MBTI 지표 정의 (선천적 성향)
+// MBTI 지표 정의
 const mbtiDimensions = [
-  { name: 'E', opposite: 'I', group: 'E/I', description: '에너지 방향: 외향형(E) vs 내향형(I)' },
-  { name: 'S', opposite: 'N', group: 'S/N', description: '정보의 인식: 감각형(S) vs 직관형(N)' },
-  { name: 'T', opposite: 'F', group: 'T/F', description: '판단의 기준: 사고형(T) vs 감정형(F)' },
-  { name: 'J', opposite: 'P', group: 'J/P', description: '생활의 양식: 계획형(J) vs 융통형(P)' },
+  { name: 'E', opposite: 'I', group: 'E/I', description: '에너지의 방향: 외향형(E) vs 내향형(I)' },
+  { name: 'S', opposite: 'N', group: 'S/N', description: '인식 기능: 감각형(S) vs 직관형(N)' },
+  { name: 'T', opposite: 'F', group: 'T/F', description: '판단 기능: 사고형(T) vs 감정형(F)' },
+  { name: 'J', opposite: 'P', group: 'J/P', description: '생활 양식: 판단형(J) vs 인식형(P)' },
 ];
 
-// 🔴 MOKA 지표 정의 (후천적 노력)
+// 🔴 MOKA 지표 정의 (새로운 지표들 반영)
 const mokaDimensions = [
-  { name: 'M', opposite: 'B', group: 'M/B', description: '의존적 매력: 주도형(M) vs 순응형(B)' },
-  { name: 'O', opposite: 'U', group: 'O/U', description: '능청적 매력: 포용형(O) vs 공격형(U)' },
-  { name: 'K', opposite: 'R', group: 'K/R', description: '대화적 매력: 표출형(K) vs 주저형(R)' },
-  { name: 'A', opposite: 'Y', group: 'A/Y', description: '자랑적 매력: 세련형(A) vs 촌티형(Y)' },
+  { name: 'M', opposite: 'B', group: 'M/B', description: '주도성: 주도형(M) vs 순응형(B)' },
+  { name: 'O', opposite: 'U', group: 'O/U', description: '관계 방식: 포용형(O) vs 공격형(U)' },
+  { name: 'K', opposite: 'R', group: 'K/R', description: '표현 방식: 표현형(K) vs 주저형(R)' },
+  { name: 'A', opposite: 'Y', group: 'A/Y', description: '스타일: 세련형(A) vs 촌티형(Y)' },
 ];
 
 const ResultsPage: React.FC = () => {
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
   const [scores, setScores] = useState<number[]>([]);
 
   useEffect(() => {
@@ -141,7 +141,8 @@ const ResultsPage: React.FC = () => {
 
   // 결과 유형에 따른 간략한 설명 (예시)
   const getResultDescription = (mbtiType: string, mokaType: string) => {
-    let description: string[] = [];
+    // 🔴 'let'을 'const'로 변경
+    const description: string[] = [];
 
     // MBTI 설명
     if (mbtiType.includes('E')) description.push("활동적이고 사교적이며 외부 활동에서 에너지를 얻는 경향이 있습니다.");
@@ -154,14 +155,14 @@ const ResultsPage: React.FC = () => {
     if (mbtiType.includes('P')) description.push("유연하고 자율적이며 변화에 잘 적응하는 편입니다.");
     
     // 🔴 MOKA 설명 (새로운 지표들 반영)
-    if (mokaType.includes('M')) description.push("카리스마적 리더십의 소유자로 사람들이 많이 의존하는 유형입니다.");
-    if (mokaType.includes('B')) description.push("타인과 조화롭게 협력하며 안정적인 관계를 추구하는 유형입니다.");
-    if (mokaType.includes('O')) description.push("약점이 드러나도 능청적으로 대처하는, 유쾌하고 포용적인 유형입니다.");
-    if (mokaType.includes('U')) description.push("약점이 드러나면 방어적으로 대처하는, 진지하고 공격적인 유형입니다.");
-    if (mokaType.includes('K')) description.push("생각과 감정을 명확하고 솔직하게 표현하는, 티키타카에 능한 유형입니다.");
-    if (mokaType.includes('R')) description.push("생각과 감정을 드러내지 못하고 주저하는, 타인과의 소통에 약한 유형입니다.");
-    if (mokaType.includes('A')) description.push("세련된 감각과 당당한 매력을 소유하여 타인의 동경을 이끌어내는 유형입니다.");
-    if (mokaType.includes('Y')) description.push("세련미와 당당함이 부족하여 상대의 동경심을 이끌어내지 못하는 유형입니다.");
+    if (mokaType.includes('M')) description.push("매사에 적극적이고 주도적으로 행동하며 목표 달성을 위해 앞장서는 **주도형**입니다.");
+    if (mokaType.includes('B')) description.push("타인의 의견을 경청하고 조화롭게 협력하며 안정적인 관계를 추구하는 **순응형**입니다.");
+    if (mokaType.includes('O')) description.push("새로운 아이디어와 다양한 관점을 열린 마음으로 받아들이며 포용하는 **포용형**입니다.");
+    if (mokaType.includes('U')) description.push("직설적이고 단호하게 자신의 의견을 피력하며 논리적으로 문제를 해결하려는 **공격형**입니다.");
+    if (mokaType.includes('K')) description.push("자신의 생각과 감정을 명확하고 솔직하게 표현하며 타인과의 소통을 중요시하는 **표현형**입니다.");
+    if (mokaType.includes('R')) description.push("자신의 감정이나 의견을 쉽게 드러내지 않으며 신중하고 조심스럽게 행동하는 **주저형**입니다.");
+    if (mokaType.includes('A')) description.push("트렌드에 민감하고 세련된 감각을 지녔으며 깔끔하고 단정한 것을 선호하는 **세련형**입니다.");
+    if (mokaType.includes('Y')) description.push("형식에 얽매이지 않고 편안하며 자신만의 개성을 자연스럽게 드러내는 **촌티형**입니다.");
 
 
     if (description.length === 0) return "당신은 고유한 매력을 가진 분입니다.";
@@ -199,14 +200,14 @@ const ResultsPage: React.FC = () => {
       }}></div>
 
       <h1 style={{
-        fontSize: '1.8em',
+        fontSize: '3.5em',
         fontWeight: 'bold',
         color: '#aaff00', // 라임색
-        textShadow: '0 0 10px rgba(255, 228, 130, 0.7)',
+        textShadow: '0 0 10px rgba(170,255,0,0.7)',
         marginBottom: '20px',
         zIndex: 1,
       }}>
-        My MBTI MOKA Type?
+        당신의 성격 유형은?
       </h1>
 
       {scores.length === 0 ? (
@@ -226,7 +227,7 @@ const ResultsPage: React.FC = () => {
         }}>
           {/* MBTI - MOKA 결과 표시 */}
           <h2 style={{
-            fontSize: '3em',
+            fontSize: '4em',
             fontWeight: '900',
             background: 'linear-gradient(45deg, #aaff00, #00ff00)',
             WebkitBackgroundClip: 'text',
@@ -283,7 +284,7 @@ const ResultsPage: React.FC = () => {
             **당신의 유형({mbti}-{moka})은...**<br/>
             {getResultDescription(mbti, moka)}
             <br/><br/>
-            (당신의 MBTI 지수는 선천적 성향이며 MOKA지수는 후천적 매력입니다.)
+            (이 설명은 예시이며, 실제 유형 분석에 따라 더 상세하고 정확한 설명을 추가해야 합니다.)
           </p>
 
           {/* 첫 화면 돌아가기 버튼 */}
